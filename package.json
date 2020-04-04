@@ -25,6 +25,7 @@
     "mochawesome-report-generator": "^4.1.0"
   },
   "dependencies": {
-    "cypress-file-upload": "^3.5.3"
+    "cypress-file-upload": "^3.5.3",
+    "minimist": ">=1.2.3"
   }
 }
