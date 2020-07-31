@@ -75,6 +75,7 @@ const checkTypedTextIsVisible = () => {
   cy.contains(/^My awesome meme$/).should('be.visible');
 }
 
+// TODO: Testar se a imagem que está sendo feito upload está sendo renderizado na página.
 const memeUpload = () => {
   const fileName = 'meme.jpeg';
   cy.fixture(fileName).then(fileContent => {
