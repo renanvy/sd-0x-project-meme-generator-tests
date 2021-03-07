@@ -45,7 +45,6 @@ const checkFullOverlappage = (backgroundSelector, forefrontSelector) => {
 
     expect(isOverEachother(backgroundElement, forefrontElement)).to.be.true;
 
-    // Text has volume
     expect(forefrontElement.top).to.not.be.undefined;
     expect(forefrontElement.bottom).to.not.be.undefined;
     expect(forefrontElement.left).to.not.be.undefined;
@@ -56,12 +55,8 @@ const checkFullOverlappage = (backgroundSelector, forefrontSelector) => {
 };
 
 const typeTextAndCheckItsPosition = (container, child) => {
-  // It inserts text in the input and page when typed
   typeText();
-
   checkTypedTextIsVisible();
-
-  // Has one element inside another
   checkFullOverlappage(container, child);
 };
 
@@ -88,65 +83,64 @@ const memeUpload = () => {
 
 //-------
 
-describe("O site deve possuir uma caixa de texto com a qual quem usa pode interagir para inserir texto em cima da imagem escolhida.", () => {
+describe("1 - Crie uma caixa de texto com a qual quem usa pode interagir para inserir texto em cima da imagem escolhida.", () => {
   beforeEach(() => {
     cy.viewport(1366, 768);
     cy.visit('/');
   })
 
-  it("O input de texto existe e conseguimos inputar texto nele", () => {
+  it("Será validado se o input de texto existe e conseguimos inputar texto nele", () => {
     typeText();
   })
 
-  it("O texto digitado no input é visível na tela", () => {
+  it("Será validado se o texto digitado no input é visível na tela", () => {
     typeText();
     checkTypedTextIsVisible();
   })
 
-  it("Existe um elemento de container para onde o texto será mostrado", () => {
+  it("Será validado se existe um elemento de container para onde o texto será mostrado", () => {
     typeText();
     checkTypedTextIsVisible();
     checkFullOverlappage('#meme-image-container', '#meme-text');
   })
 });
 
-describe("O site deve permitir que quem usa faça upload de uma imagem de seu computador.", () => {
+describe("2 - O site deve permitir que quem usa faça upload de uma imagem de seu computador.", () => {
   beforeEach(() => {
     cy.viewport(1366, 768);
     cy.visit('/');
   })
 
-  it("É possível carregar uma imagem através do elemento correto", () => {
+  it("Será validado se é possível carregar uma imagem através do elemento correto", () => {
     memeUpload();
   })
 
-  it("A imagem carregada é exibida dentro do elemento correto", () => {
+  it("Será validado se a imagem carregada é exibida dentro do elemento correto", () => {
     memeUpload();
     cy.get('#meme-image').should('be.visible');
   })
 
-  it("O texto é inserido corretamente sobre a imagem", () => {
+  it("Será validado se o texto é inserido corretamente sobre a imagem", () => {
     memeUpload();
     cy.get('#meme-image').should('be.visible');
     typeTextAndCheckItsPosition('#meme-image', '#meme-text');
   })
 });
 
-describe("O site deve ter uma moldura no container. A moldura deve ter 1 pixel de largura, deve ser preta e do tipo 'solid'. A área onde a imagem aparecerá deve ter fundo branco.", () => {
+describe("3 - Adicione uma moldura no container. A moldura deve ter 1 pixel de largura, deve ser preta e do tipo 'solid'. A área onde a imagem aparecerá deve ter fundo branco.", () => {
   beforeEach(() => {
     cy.viewport(1366, 768);
     cy.visit('/');
     cy.reload();
   })
 
-  it("O elemento que serve de container para a imagem deve ter o a cor de fundo branca", () => {
-    // Image container has a white background
+  it("Será validado se o elemento que serve de container para a imagem tem a cor de fundo branca", () => {
     cy.get('#meme-image-container').should($container => {
       expect($container).to.have.css('background-color', 'rgb(255, 255, 255)');
     });
   })
 
-  it("O elemento que serve de container para a imagem deve ter uma borda preta, sólida, com 1 pixel de largura", () => {
+  it("Será validado se o elemento que serve de container para a imagem tem uma borda preta, sólida, com 1 pixel de largura", () => {
     cy.get('#meme-image-container').should(
       'have.css',
       'border',
@@ -154,35 +148,31 @@ describe("O site deve ter uma moldura no container. A moldura deve ter 1 pixel d
     );
   })
 
-  it("A imagem deve estar totalmente contida dentro do elemento identificado como `meme-image-container`", () => {
-    // Image is precisely inside it's container
+  it("Será validado se a imagem deve estar totalmente contida dentro do elemento identificado como `meme-image-container`", () => {
     memeUpload();
     checkFullOverlappage('#meme-image-container', '#meme-image');
   })
 });
 
-describe("O texto que será inserido sobre a imagem deve ter uma cor, sombra e tamanho específicos.", () => {
+describe("4 - Adicione o texto que será inserido sobre a imagem tem uma cor, sombra e tamanho específicos.", () => {
   beforeEach(() => {
     cy.viewport(1366, 768);
     cy.visit('/');
     cy.reload();
   })
 
-  it("O texto do elemento `meme-text` deve ter uma sombra preta, de 5 pixels na horizontal, 5 pixels na vertical e um raio de desfoque de 5 pixels", () => {
+  it("Será validado se o texto do elemento `meme-text` dtem uma sombra preta, de 5 pixels na horizontal, 5 pixels na vertical e um raio de desfoque de 5 pixels", () => {
     cy.get('#meme-text').should($text => {
       expect($text).to.have.css('text-shadow', 'rgb(0, 0, 0) 5px 5px 5px');
     });
   })
 
-  it("O texto do elemento `meme-text` deve ter a fonte com o tamanho de 30 pixels", () => {
-    cy.get('#meme-text').should(
-      'have.css',
-      'font-size',
-      '30px',
+  it("Será validado se o texto do elemento `meme-text` tem a fonte com o tamanho de 30 pixels", () => {
+    cy.get('#meme-text').should('have.css','font-size','30px',
     );
   })
 
-  it("O texto do elemento `meme-text` deve estar na cor branca", () => {
+  it("Será validado se o texto do elemento `meme-text` deve estar na cor branca", () => {
     cy.get('#meme-text').should(
       'have.css',
       'color',
@@ -191,14 +181,14 @@ describe("O texto que será inserido sobre a imagem deve ter uma cor, sombra e t
   })
 });
 
-describe("Limite o tamanho do texto que o usuário pode inserir.", () => {
+describe("5 - Limite o tamanho do texto que o usuário pode inserir.", () => {
   beforeEach(() => {
     cy.viewport(1366, 768);
     cy.visit('/');
     cy.reload();
   })
 
-  it("A quantidade máxima de caracteres digitáveis no elemento `text-input` deve ser 60.", () => {
+  it("Será validado se a quantidade máxima de caracteres digitáveis no elemento `text-input` deve ser 60.", () => {
     cy.get('#text-input')
       .type('I have written a line that has precisely sixty-one characters')
       .should(
@@ -210,13 +200,13 @@ describe("Limite o tamanho do texto que o usuário pode inserir.", () => {
 
 // Bonus requirements
 
-describe("Permita a quem usa customizar o meme escolhido acrescentando a ele uma de três bordas. A página deve ter três botões, que ao serem clicados devem cada um trocar a própria borda ao redor do container.", () => {
+describe("6 - Permita a quem usa customizar o meme escolhido acrescentando a ele uma de três bordas. A página deve ter três botões, que ao serem clicados devem cada um trocar a própria borda ao redor do container.", () => {
   beforeEach(() => {
     cy.viewport(1366, 768);
     cy.visit('/');
   })
 
-  it("O botão com identificado com id `fire` funciona corretamente.", () => {
+  it("Será validado se o botão com identificado com id `fire` funciona corretamente.", () => {
     cy.get('#fire').should(
       'have.css',
       'background-color',
@@ -230,7 +220,7 @@ describe("Permita a quem usa customizar o meme escolhido acrescentando a ele uma
     );
   })
 
-  it("O botão com identificado com id `water` funciona corretamente.", () => {
+  it("Será validado se o botão com identificado com id `water` funciona corretamente.", () => {
     cy.get('#water').should(
       'have.css',
       'background-color',
@@ -244,7 +234,7 @@ describe("Permita a quem usa customizar o meme escolhido acrescentando a ele uma
     );
   })
 
-  it("O botão com identificado com id `earth` funciona corretamente.", () => {
+  it("Será validado se o botão com identificado com id `earth` funciona corretamente.", () => {
     cy.get('#earth').should(
       'have.css',
       'background-color',
@@ -259,13 +249,13 @@ describe("Permita a quem usa customizar o meme escolhido acrescentando a ele uma
   })
 });
 
-describe("Tenha um conjunto de quatro imagens pré prontas de memes famosos para o usuário escolher. Mostre miniaturas das imagens e, mediante clique do usuário, essa imagem deve aparecer dentro da moldura do elemento de container.", () => {
+describe("7 - Tenha um conjunto de quatro imagens pré prontas de memes famosos para o usuário escolher. Mostre miniaturas das imagens e, mediante clique do usuário, essa imagem deve aparecer dentro da moldura do elemento de container.", () => {
   beforeEach(() => {
     cy.viewport(1366, 768);
     cy.visit('/');
   })
 
-  it("As imagens prontas apresentam o comportamente esperado.", () => {
+  it("Será validado se as imagens prontas apresentam o comportamente esperado.", () => {
     [1, 2, 3, 4].map(memeId => {
       cy.get(`#meme-${memeId}`).click();
       cy.get('#meme-image')
